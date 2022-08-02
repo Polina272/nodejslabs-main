@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Home</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css"
+        integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+    <script>
+        function request(method, url, formId) {
+            var http = new XMLHttpRequest();
+            http.open(method, url, true);
+            http.setRequestHeader("Content-type", "application/json");
+            const formData = new FormData(document.getElementById(formId));
+            let params = {};
+            for (var pair of formData.entries()) {
+                params[pair[0]] = pair[1];
+            }
+            http.send(JSON.stringify(params));
+            http.onload = () => {
+                alert(JSON.stringify(http.responseText, null, 2));
+            }
+        }
+    </script>
+    <style>
+        html,
+        body {
+            min-height: 100%;
+        }
+
+        body,
+        div,
+        form,
+        input,
+        select,
+        p {
+            padding: 0;
+            margin: 0;
+            outline: none;
+            font-family: Roboto, Arial, sans-serif;
+            font-size: 14px;
+            color: #666;
+            line-height: 22px;
+        }
+
+        h1 {
+            margin: 15px 0;
+            font-weight: 400;
+        }
+
+        .testbox {
+            justify-content: center;
+            align-items: center;
+            height: inherit;
+            padding: 3px;
+        }
+
+        form {
+            width: 100%;
+            padding: 20px;
+            background: #fff;
+            box-shadow: 0 2px 5px #ccc;
+        }
+
+        input,
+        select,
+        textarea {
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+
+        input {
+            width: calc(100% - 10px);
+            padding: 5px;
+        }
+
+        select {
+            width: 100%;
+            padding: 7px 0;
+            background: transparent;
+        }
+
+        textarea {
+            width: calc(100% - 6px);
+        }
+
+        .item {
+            position: relative;
+            margin: 10px 0;
+        }
+
+        .item:hover p,
+        .item:hover i {
+            color: #3c8409;
+        }
+
+        input:hover,
+        select:hover,
+        textarea:hover {
+            box-shadow: 0 0 5px 0 #3c8409;
+        }
+
+        .btn-block {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        button {
+            width: 150px;
+            padding: 10px;
+            border: none;
+            -webkit-border-radius: 5px;
+            -moz-border-radius: 5px;
+            border-radius: 5px;
+            background-color: #3c8409;
+            font-size: 16px;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #3c8409;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="testbox">
+        <form id="account-create" onsubmit="return false;">
+            <h1>Create Account</h1>
+            <div class="item">
+                <p>Login</p>
+                <input type="login" name="login" required />
+            </div>
+            <div class="item">
+                <p>Password</p>
+                <input type="password" name="password" required />
+            </div>
+            <button onclick="request('POST', '/account/create', 'account-create')">Submit</button>
+        </form>
+        <form id="account-delete" onsubmit="return false;">
+            <h1>Delete Account</h1>
+            <div class="item">
+                <p>Account Id</p>
+                <input type="number" name="id" required />
+            </div>
+            <button onclick="request('POST', '/account/delete', 'account-delete')">Submit</button>
+        </form>
+        <form id="account-update" onsubmit="return false;">
+            <h1>Update Account</h1>
+            <div class="item">
+                <p>Account Id</p>
+                <input type="number" name="id" required />
+            </div>
+            <p>What should update</p>
+            <div class="item">
+                <p>Login</p>
+                <input type="text" name="login" />
+            </div>
+            <div class="item">
+                <p>Password</p>
+                <input type="text" name="password" />
+            </div>
+            <button onclick="request('POST', '/account/update', 'account-update')">Submit</button>
+        </form>
+        <form id="account-get" onsubmit="request('POST', '/account/get', 'account-get'); return false;">
+            <h1>Get Account</h1>
+            <div class="item">
+                <p>Account Id</p>
+                <input type="number" name="id" required />
+            </div>
+            <button>Submit</button>
+        </form>
+        <hr />
+
+        <form id="cultivation-create" onsubmit="return false;">
+            <h1>Create Сultivation</h1>
+            <div class="item">
+                <p>Name</p>
+                <input type="text" name="name Сultivation" required />
+            </div>
+            <div class="item">
+                <p>Type</p>
+                <select name="type" required>
+                    <option value="corn">Corn</option>
+                    <option value="wheat">Wheat</option>
+                    <option value="soy">Soy</option>
+                    <option value="barley">Barley</option>
+                    <option value="sunflower">Sunflower</option>
+                </select>
+            </div>
+            <button onclick="request('POST', '/cultivation/create', 'cultivation-create')">Submit</button>
+        </form>
+        <form id="cultivation-delete" onsubmit="return false;">
+            <h1>Delete Cultivation </h1>
+            <div class="item">
+                <p>Animal Id</p>
+                <input type="number" name="id" required />
+            </div>
+            <button onclick="request('POST', '/cultivation/delete', 'cultivation-delete')">Submit</button>
+        </form>
+        <form id="cultivation-update" onsubmit="return false;">
+            <h1>Update Cultivation</h1>
+            <div class="item">
+                <p>Cultivation Id</p>
+                <input type="number" name="id" required />
+            </div>
+            <p>What should update</p>
+            <div class="item">
+                <p>Name</p>
+                <input type="text" name="name Сultivation" />
+            </div>
+            <div class="item">
+                <p>Type</p>
+                <select name="type">
+                    <option value="corn">Corn</option>
+                    <option value="wheat">Wheat</option>
+                    <option value="soy">Soy</option>
+                    <option value="barley">Barley</option>
+                    <option value="sunflower">Sunflower</option>
+                </select>
+            </div>
+            <button onclick="request('POST', '/cultivation/update', 'cultivation-update')">Submit</button>
+        </form>
+        <form id="cultivation-get" onsubmit="return false;">
+            <h1>Get Cultivation</h1>
+            <div class="item">
+                <p>Cultivation Id</p>
+                <input type="number" name="id" required />
+            </div>
+            <button onclick="request('POST', '/cultivation/get', 'cultivation-get')">Submit</button>
+        </form>
+    </div>
+</body>
+
+</html>
