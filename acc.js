@@ -1,9 +1,4 @@
-import express from 'express';
-import bodyParser from 'body-parser';
-import cookieParser from 'cookie-parser';
-const app = express();
-const port = process.env.PORT || 3000;
-
+// Account CRUD
 const ACCOUNTS_MOCK = [
   {
     id: 1,
@@ -18,30 +13,6 @@ let beastIdConstaintMock = 0;
 
 const sessions = new Map(); // map sign in cookie -> session
 
-// Parse cookies
-app.use(cookieParser());
-
-// parse application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: true }));
-
-// parse application/json
-
-app.use(bodyParser.json());
-
-
-app.get('/home.html', (req, res, next) => {
-  if (sessions.get(req.cookies.sign)) {
-    next();
-  } else {
-    res.redirect(300, '/');
-  }
-});
-
-// Serve static files
-app.use(express.static('static'));
-
-
-// Account CRUD
 app.post('/account/get', (req, res) => {
   const account = ACCOUNTS_MOCK.find(({ id }) => parseInt(req.body.id) === id);
   if (account) {
@@ -113,64 +84,3 @@ app.post('/account/login', (req, res) => {
     res.end();
   }
 });
-
-// BEAST CRUD
-app.post('/BEAST/get', (req, res) => {
-  const beast = BEAST_MOCK.find(({ id }) => parseInt(req.body.id) === id);
-  if (beast) {
-    console.log('BEAST found');
-    res.send(JSON.stringify(beast));
-    res.status(200);
-  } else {
-    res.send(JSON.stringify({ responce: 'not found' }));
-    res.status(404);
-  }
-  res.end();
-});
-
-app.post('/beast/delete', (req, res) => {
-  // Deleting beast
-  const index = BEAST_MOCK.findIndex(({ id }) => parseInt(req.body.id) === id);
-  if (index !== undefined) {
-    BEAST_MOCK.splice(index, 1);
-    console.log('Beast deleted');
-    res.send(JSON.stringify({ responce: 'done' }));
-    res.status(200);
-  } else {
-    res.send(JSON.stringify({ responce: 'not found' }));
-    res.status(404);
-  }
-  res.end();
-});
-
-app.post('/beast/update', (req, res) => {
-  // Updating beast
-  const index = BEAST_MOCK.findIndex(({ id }) => parseInt(req.body.id) === id);
-  if (index !== undefined) {
-    BEAST_MOCK[index] = { ...BEAST_MOCK[index], ...req.body };
-    console.log(BEAST_MOCK[index]);
-    console.log('beast updated');
-    res.send(JSON.stringify({ responce: 'done' }));
-    res.status(200);
-  } else {
-    res.send(JSON.stringify({ responce: 'not found' }));
-    res.status(404);
-  }
-  res.end();
-});
-
-app.post('/beast/create', (req, res) => {
-  // Creating beast
-  beastIdConstaintMock += 1;
-  _MOCK.push({ ...req.body, id: beastIdConstaintMock });
-  console.log('Beast created');
-  res.send(JSON.stringify({ id: beastIdConstaintMock }));
-  res.status(200);
-  res.end();
-});
-
-
-app.listen(port, () => {
-  console.log(`Http server listening on http://localhost:${port}`);
-});
-
